@@ -11,6 +11,11 @@ void main() {
 
     await tester.pumpWidget(const BMICalculator());
 
+    expect(find.text('HealthScale'), findsOneWidget);
+
+    await tester.pump(const Duration(milliseconds: 1900));
+    await tester.pumpAndSettle();
+
     expect(find.text('BMI CALCULATOR'), findsOneWidget);
     expect(find.text('HEIGHT'), findsOneWidget);
     expect(find.text('CALCULATE'), findsOneWidget);

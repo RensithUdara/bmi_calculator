@@ -19,22 +19,22 @@ class IconContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          height: 64,
-          width: 64,
+          height: 58,
+          width: 58,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: colour.withValues(alpha: 0.14),
+            color: colour.withValues(alpha: 0.16),
             boxShadow: [
               BoxShadow(
-                color: colour.withValues(alpha: 0.18),
-                blurRadius: 22,
-                offset: const Offset(0, 10),
+                color: colour.withValues(alpha: 0.22),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
               ),
             ],
           ),
-          child: Icon(icon, size: 34.0, color: colour),
+          child: Icon(icon, size: 31.0, color: colour),
         ),
-        const SizedBox(height: 14.0),
+        const SizedBox(height: 12.0),
         Text(label, style: kLabelTextStyle),
       ],
     );

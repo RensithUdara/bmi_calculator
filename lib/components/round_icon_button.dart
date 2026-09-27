@@ -7,8 +7,8 @@ class RoundIconButton extends StatelessWidget {
     required this.icon,
     required this.onPressed,
     this.onLongPressed,
-    this.size = 48.0,
-    this.color = const Color(0xFF252D47),
+    this.size = 46.0,
+    this.color = const Color(0xCC202B45),
     this.elevation = 0.0,
   }) : super(key: key);
 
@@ -31,14 +31,9 @@ class RoundIconButton extends StatelessWidget {
         ),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x80000000),
-            blurRadius: 14,
-            offset: Offset(0, 8),
-          ),
-          BoxShadow(
-            color: Color(0x1FFFFFFF),
-            blurRadius: 7,
-            offset: Offset(-3, -3),
+            color: Color(0x40000000),
+            blurRadius: 12,
+            offset: Offset(0, 7),
           ),
         ],
       ),

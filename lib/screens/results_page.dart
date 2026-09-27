@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bmicalc/calculator_brain.dart';
+import 'package:bmicalc/components/app_background.dart';
 import 'package:bmicalc/components/bottom_button.dart';
 import 'package:bmicalc/components/reusable_card.dart';
 import 'package:bmicalc/constants.dart';
@@ -12,17 +13,10 @@ class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [kBackgroundTop, kBackgroundBottom],
-          ),
-        ),
+      body: AppBackground(
         child: SafeArea(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 820),
@@ -30,11 +24,11 @@ class ResultsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _ResultsHeader(category: report.category),
-                    const SizedBox(height: 18),
+                    const SizedBox(height: 12),
                     _ScoreCard(report: report),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     _InsightGrid(report: report),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     _ActionCard(steps: report.actionSteps),
                     BottomButton(
                       buttonTitle: 'RE-CALCULATE',
@@ -109,31 +103,143 @@ class _ScoreCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       colour: kActiveCardColour,
-      padding: const EdgeInsets.all(24),
-      cardChild: Column(
-        children: [
-          Text(report.category.toUpperCase(), style: kResultTextStyle),
-          const SizedBox(height: 6),
-          Text(report.bmiText, style: kBMITextStyle),
-          const Text('BMI score', style: kLabelTextStyle),
-          const SizedBox(height: 22),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: LinearProgressIndicator(
-              value: report.progress,
-              minHeight: 14,
-              backgroundColor: Colors.white.withValues(alpha: 0.10),
-              valueColor: const AlwaysStoppedAnimation<Color>(kAccentColorAlt),
+      padding: const EdgeInsets.all(20),
+      cardChild: LayoutBuilder(
+        builder: (context, constraints) {
+          final isWide = constraints.maxWidth >= 560;
+
+          final score = SizedBox(
+            height: 172,
+            width: 172,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox.expand(
+                  child: CircularProgressIndicator(
+                    value: report.progress,
+                    strokeWidth: 12,
+                    strokeCap: StrokeCap.round,
+                    backgroundColor: Colors.white.withValues(alpha: 0.10),
+                    valueColor: const AlwaysStoppedAnimation<Color>(
+                      kAccentColorAlt,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 132,
+                  width: 132,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Color(0xFF263A5E), Color(0xFF171A32)],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x88000000),
+                        blurRadius: 24,
+                        offset: Offset(0, 14),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(report.bmiText, style: kBMITextStyle),
+                    const Text('BMI score', style: kLabelTextStyle),
+                  ],
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 18),
-          Text(
-            report.interpretation,
-            textAlign: TextAlign.center,
-            style: kBodyTextStyle,
-          ),
-        ],
+          );
+
+          final details = Column(
+            crossAxisAlignment:
+                isWide ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+            children: [
+              Text(report.category.toUpperCase(), style: kResultTextStyle),
+              const SizedBox(height: 12),
+              Text(
+                report.interpretation,
+                textAlign: isWide ? TextAlign.left : TextAlign.center,
+                style: kBodyTextStyle,
+              ),
+              const SizedBox(height: 18),
+              const _RangeBar(),
+            ],
+          );
+
+          if (isWide) {
+            return Row(
+              children: [
+                score,
+                const SizedBox(width: 28),
+                Expanded(child: details),
+              ],
+            );
+          }
+
+          return Column(
+            children: [
+              score,
+              const SizedBox(height: 16),
+              details,
+            ],
+          );
+        },
       ),
+    );
+  }
+}
+
+class _RangeBar extends StatelessWidget {
+  const _RangeBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(999),
+          child: const Row(
+            children: [
+              Expanded(
+                flex: 185,
+                child: ColoredBox(
+                  color: Color(0xFFFFC15D),
+                  child: SizedBox(height: 10),
+                ),
+              ),
+              Expanded(
+                flex: 64,
+                child: ColoredBox(
+                  color: kAccentColorAlt,
+                  child: SizedBox(height: 10),
+                ),
+              ),
+              Expanded(
+                flex: 151,
+                child: ColoredBox(
+                  color: kAccentColor,
+                  child: SizedBox(height: 10),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Low', style: kLabelTextStyle),
+            Text('Healthy', style: kLabelTextStyle),
+            Text('High', style: kLabelTextStyle),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -171,6 +277,7 @@ class _InsightGrid extends StatelessWidget {
 
         if (isWide) {
           return Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: cards.map((card) => Expanded(child: card)).toList(),
           );
         }
@@ -198,25 +305,41 @@ class _InsightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       colour: kInactiveCardColour,
-      padding: const EdgeInsets.all(16),
-      cardChild: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      padding: const EdgeInsets.all(15),
+      cardChild: Row(
         children: [
-          Icon(icon, color: kAccentColorAlt),
-          const SizedBox(height: 12),
-          Text(label, style: kLabelTextStyle),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 19,
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 0,
+          Container(
+            height: 44,
+            width: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: kAccentColorAlt.withValues(alpha: 0.12),
+              border:
+                  Border.all(color: kAccentColorAlt.withValues(alpha: 0.32)),
+            ),
+            child: Icon(icon, color: kAccentColorAlt),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: kLabelTextStyle),
+                const SizedBox(height: 7),
+                Text(
+                  value,
+                  style: const TextStyle(
+                    fontSize: 19,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0,
+                  ),
+                ),
+                const SizedBox(height: 5),
+                Text(footnote, style: kCorrectTitleTextStyle),
+              ],
             ),
           ),
-          const SizedBox(height: 6),
-          Text(footnote, style: kCorrectTitleTextStyle),
         ],
       ),
     );
@@ -232,7 +355,7 @@ class _ActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       colour: kActiveCardColour,
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       cardChild: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

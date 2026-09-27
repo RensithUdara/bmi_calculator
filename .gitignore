@@ -3,6 +3,9 @@
 *.log
 *.pyc
 *.swp
+*.tmp
+*.bak
+*.orig
 .DS_Store
 .atom/
 .build/
@@ -28,10 +31,12 @@ migrate_working_dir/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
+.flutter-plugins
 .pub-cache/
 .pub/
 /build/
 /coverage/
+pubspec.lock.backup
 
 # Symbolication related
 app.*.symbols
@@ -43,3 +48,30 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android/Gradle local and generated files
+/android/.gradle/
+/android/local.properties
+/android/**/build/
+
+# iOS generated files
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/flutter_export_environment.sh
+/ios/Flutter/ephemeral/
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/App.framework
+/ios/Flutter/Flutter.framework
+
+# macOS generated files
+/macos/Flutter/GeneratedPluginRegistrant.swift
+/macos/Flutter/ephemeral/
+/macos/Pods/
+/macos/.symlinks/
+
+# Windows/Linux generated build outputs
+/windows/flutter/ephemeral/
+/linux/flutter/ephemeral/
+
+# Generated plugin registrant files
+**/GeneratedPluginRegistrant.*

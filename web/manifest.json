@@ -1,11 +1,11 @@
 {
-    "name": "bmicalc",
-    "short_name": "bmicalc",
+    "name": "HealthScale",
+    "short_name": "HealthScale",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#081D2D",
+    "theme_color": "#58F2D6",
+    "description": "BMI and wellness snapshot calculator.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

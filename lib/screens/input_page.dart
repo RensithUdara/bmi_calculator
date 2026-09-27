@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bmicalc/calculator_brain.dart';
+import 'package:bmicalc/components/app_background.dart';
 import 'package:bmicalc/components/bottom_button.dart';
 import 'package:bmicalc/components/icon_content.dart';
 import 'package:bmicalc/components/reusable_card.dart';
@@ -58,41 +59,38 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [kBackgroundTop, kBackgroundBottom],
-          ),
-        ),
+      body: AppBackground(
         child: SafeArea(
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(16, 18, 16, 8),
+                padding: const EdgeInsets.fromLTRB(14, 14, 14, 6),
                 child: Center(
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 820),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _Header(onReset: _resetValues),
-                        const SizedBox(height: 18),
+                        _Header(
+                          height: height,
+                          weight: weight,
+                          onReset: _resetValues,
+                        ),
+                        const SizedBox(height: 12),
                         _GenderSelector(
                           selectedGender: selectedGender,
                           onChanged: (gender) {
                             setState(() => selectedGender = gender);
                           },
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                         _HeightCard(
                           height: height,
                           onChanged: (value) {
                             setState(() => height = value);
                           },
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                         _MetricGrid(
                           weight: weight,
                           age: age,
@@ -103,7 +101,7 @@ class _InputPageState extends State<InputPage> {
                             setState(() => age = value.clamp(1, 120));
                           },
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                         _ActivitySelector(
                           selected: activityLevel,
                           onChanged: (value) {
@@ -129,36 +127,74 @@ class _InputPageState extends State<InputPage> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.onReset});
+  const _Header({
+    required this.height,
+    required this.weight,
+    required this.onReset,
+  });
 
+  final double height;
+  final double weight;
   final VoidCallback onReset;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('BMI CALCULATOR', style: kTitleTextStyle),
-              SizedBox(height: 6),
-              Text(
-                'A quick body profile with healthy range and daily energy estimate.',
-                style: kBodyTextStyle,
-              ),
-            ],
+    final previewBmi = weight / ((height / 100) * (height / 100));
+
+    return ReusableCard(
+      colour: const Color(0xD9101A2E),
+      margin: EdgeInsets.zero,
+      padding: const EdgeInsets.all(16),
+      cardChild: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(18),
+            child: Image.asset(
+              'assets/images/healthscale-logo.png',
+              height: 58,
+              width: 58,
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        const SizedBox(width: 14),
-        Tooltip(
-          message: 'Reset values',
-          child: RoundIconButton(
-            icon: Icons.refresh_rounded,
-            onPressed: onReset,
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const FittedBox(
+                  alignment: Alignment.centerLeft,
+                  fit: BoxFit.scaleDown,
+                  child: Text('BMI CALCULATOR', style: kTitleTextStyle),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'Tune your profile and get a quick wellness snapshot.',
+                  style: kBodyTextStyle,
+                ),
+                const SizedBox(height: 14),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: [
+                    _MiniPill(
+                        text: 'Live BMI ${previewBmi.toStringAsFixed(1)}'),
+                    _MiniPill(text: '${height.toStringAsFixed(0)} cm'),
+                    _MiniPill(text: '${weight.toStringAsFixed(1)} kg'),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          const SizedBox(width: 14),
+          Tooltip(
+            message: 'Reset values',
+            child: RoundIconButton(
+              icon: Icons.refresh_rounded,
+              onPressed: onReset,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -222,7 +258,7 @@ class _HeightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       colour: kActiveCardColour,
-      padding: const EdgeInsets.fromLTRB(20, 22, 20, 18),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
       cardChild: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -240,7 +276,7 @@ class _HeightCard extends StatelessWidget {
               _MiniPill(text: '${(height / 30.48).toStringAsFixed(1)} ft'),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Slider(
             value: height,
             min: 120,
@@ -248,6 +284,13 @@ class _HeightCard extends StatelessWidget {
             divisions: 100,
             label: '${height.toStringAsFixed(0)} cm',
             onChanged: onChanged,
+          ),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('120 cm', style: kLabelTextStyle),
+              Text('220 cm', style: kLabelTextStyle),
+            ],
           ),
         ],
       ),
@@ -330,34 +373,43 @@ class _StepperCard extends StatelessWidget {
     return ReusableCard(
       colour: kActiveCardColour,
       cardChild: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(label, style: kLabelTextStyle),
-          const SizedBox(height: 8),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(value, style: kNumberTextStyle),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 9, left: 5),
-                child: Text(unit, style: kLabelTextStyle),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(label, style: kLabelTextStyle),
+                    const SizedBox(height: 6),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(value, style: kNumberTextStyle),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8, left: 5),
+                          child: Text(unit, style: kLabelTextStyle),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RoundIconButton(
-                icon: FontAwesomeIcons.minus,
-                onPressed: onMinus,
-                onLongPressed: onMinusLong,
-              ),
-              const SizedBox(width: 16),
-              RoundIconButton(
-                icon: FontAwesomeIcons.plus,
-                onPressed: onPlus,
-                onLongPressed: onPlusLong,
+              Row(
+                children: [
+                  RoundIconButton(
+                    icon: FontAwesomeIcons.minus,
+                    onPressed: onMinus,
+                    onLongPressed: onMinusLong,
+                  ),
+                  const SizedBox(width: 12),
+                  RoundIconButton(
+                    icon: FontAwesomeIcons.plus,
+                    onPressed: onPlus,
+                    onLongPressed: onPlusLong,
+                  ),
+                ],
               ),
             ],
           ),
@@ -380,12 +432,12 @@ class _ActivitySelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       colour: kActiveCardColour,
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(16),
       cardChild: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text('ACTIVITY LEVEL', style: kLabelTextStyle),
-          const SizedBox(height: 14),
+          const SizedBox(height: 12),
           Wrap(
             spacing: 10,
             runSpacing: 10,
@@ -409,14 +461,12 @@ class _ActivitySelector extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
                 selectedColor: kAccentColorAlt,
-                backgroundColor: Colors.white.withValues(alpha: 0.08),
+                backgroundColor: Colors.white.withValues(alpha: 0.07),
                 side: BorderSide(
                   color: isSelected ? kAccentColorAlt : kCardBorderColor,
                 ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 10,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
               );
             }).toList(),
           ),

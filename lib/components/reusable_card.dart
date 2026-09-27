@@ -8,8 +8,8 @@ class ReusableCard extends StatelessWidget {
     this.cardChild,
     this.onPress,
     this.isSelected = false,
-    this.padding = const EdgeInsets.all(18.0),
-    this.margin = const EdgeInsets.all(8.0),
+    this.padding = const EdgeInsets.all(16.0),
+    this.margin = const EdgeInsets.all(7.0),
   }) : super(key: key);
 
   final Color colour;
@@ -29,39 +29,35 @@ class ReusableCard extends StatelessWidget {
         onTap: onPress,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
+          width: double.infinity,
           margin: margin,
           padding: padding,
           decoration: BoxDecoration(
             color: colour,
-            borderRadius: BorderRadius.circular(22.0),
+            borderRadius: BorderRadius.circular(28.0),
             border: Border.all(
               color: isSelected ? kAccentColorAlt : kCardBorderColor,
-              width: isSelected ? 1.4 : 1,
+              width: isSelected ? 1.6 : 1,
             ),
             boxShadow: [
               const BoxShadow(
-                color: Color(0x66000000),
-                blurRadius: 24,
-                offset: Offset(0, 18),
+                color: Color(0x40000000),
+                blurRadius: 18,
+                offset: Offset(0, 12),
               ),
               if (isSelected)
                 BoxShadow(
-                  color: kAccentColorAlt.withValues(alpha: 0.24),
-                  blurRadius: 28,
-                  offset: const Offset(0, 10),
+                  color: kAccentColorAlt.withValues(alpha: 0.32),
+                  blurRadius: 30,
+                  offset: const Offset(0, 8),
                 ),
-              const BoxShadow(
-                color: Color(0x1AFFFFFF),
-                blurRadius: 8,
-                offset: Offset(-4, -4),
-              ),
             ],
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                isSelected ? const Color(0xFF2E3B61) : colour,
-                isSelected ? const Color(0xFF1A2037) : const Color(0xFF111729),
+                isSelected ? const Color(0xE63D4D7B) : colour,
+                isSelected ? const Color(0xD9172040) : const Color(0xBF10182B),
               ],
             ),
           ),

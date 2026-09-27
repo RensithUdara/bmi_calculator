@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bmicalc/constants.dart';
-import 'package:bmicalc/screens/input_page.dart';
+import 'package:bmicalc/screens/splash_screen.dart';
 
 void main() => runApp(const BMICalculator());
 
@@ -31,7 +31,7 @@ class BMICalculator extends StatelessWidget {
               displayColor: Colors.white,
             ),
       ),
-      home: const InputPage(),
+      home: const SplashScreen(),
     );
   }
 }

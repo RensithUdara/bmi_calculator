@@ -52,10 +52,10 @@ class ResultsPage extends StatelessWidget {
                   ),
                   RichText(
                     textAlign: TextAlign.center,
-                    text: TextSpan(
+                    text: const TextSpan(
                       text: 'Normal BMI range:\n',
                       style: kCorrectTitleTextStyle,
-                      children: const <TextSpan>[
+                      children: <TextSpan>[
                         TextSpan(
                           text: '18.5 to 24.9 (kg/m\u00B2)',
                           style: kCorrectDataTextStyle

@@ -5,9 +5,11 @@ import 'package:bmicalc/components/bottom_button.dart';
 
 class ResultsPage extends StatelessWidget {
   const ResultsPage(
-      {Key? key, required this.interpretation,
-        required this.bmiResult,
-        required this.resultText}) : super(key: key);
+      {Key? key,
+      required this.interpretation,
+      required this.bmiResult,
+      required this.resultText})
+      : super(key: key);
 
   final String bmiResult;
   final String resultText;
@@ -53,15 +55,13 @@ class ResultsPage extends StatelessWidget {
                   RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
-                      text: 'Normal BMI range:\n',
-                      style: kCorrectTitleTextStyle,
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '18.5 to 24.9 (kg/m\u00B2)',
-                          style: kCorrectDataTextStyle
-                        ),
-                      ]
-                    ),
+                        text: 'Normal BMI range:\n',
+                        style: kCorrectTitleTextStyle,
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: '18.5 to 24.9 (kg/m\u00B2)',
+                              style: kCorrectDataTextStyle),
+                        ]),
                   ),
                   Text(
                     interpretation,

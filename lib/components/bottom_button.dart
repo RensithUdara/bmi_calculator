@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:bmicalc/constants.dart';
 
 class BottomButton extends StatelessWidget {
-  const BottomButton({Key? key, required this.onTap, required this.buttonTitle}) : super(key: key);
+  const BottomButton({Key? key, required this.onTap, required this.buttonTitle})
+      : super(key: key);
 
   final VoidCallback onTap;
   final String buttonTitle;

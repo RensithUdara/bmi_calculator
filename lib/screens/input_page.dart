@@ -111,8 +111,8 @@ class _InputPageState extends State<InputPage> {
                       activeTrackColor: Colors.white,
                       thumbColor: const Color(0xFFEB1555),
                       overlayColor: const Color(0x29EB1555),
-                      thumbShape: const RoundSliderThumbShape(
-                          enabledThumbRadius: 15.0),
+                      thumbShape:
+                          const RoundSliderThumbShape(enabledThumbRadius: 15.0),
                       overlayShape:
                           const RoundSliderOverlayShape(overlayRadius: 30.0),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bmicalc/constants.dart';
 import 'package:bmicalc/screens/input_page.dart';
 
 void main() => runApp(const BMICalculator());
@@ -10,9 +11,25 @@ class BMICalculator extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark().copyWith(
-        primaryColor: const Color(0xFF0A0E21),
-        scaffoldBackgroundColor: const Color(0xFF0A0E21),
+      theme: ThemeData.dark(useMaterial3: true).copyWith(
+        colorScheme: const ColorScheme.dark(
+          primary: kAccentColor,
+          secondary: kAccentColorAlt,
+          surface: kSurfaceColor,
+        ),
+        scaffoldBackgroundColor: kBackgroundBottom,
+        sliderTheme: SliderThemeData(
+          activeTrackColor: kAccentColorAlt,
+          inactiveTrackColor: Colors.white.withOpacity(0.12),
+          thumbColor: Colors.white,
+          overlayColor: kAccentColorAlt.withOpacity(0.14),
+          trackHeight: 8,
+        ),
+        textTheme: ThemeData.dark().textTheme.apply(
+              fontFamily: 'Roboto',
+              bodyColor: Colors.white,
+              displayColor: Colors.white,
+            ),
       ),
       home: const InputPage(),
     );

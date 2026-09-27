@@ -20,9 +20,9 @@ class BMICalculator extends StatelessWidget {
         scaffoldBackgroundColor: kBackgroundBottom,
         sliderTheme: SliderThemeData(
           activeTrackColor: kAccentColorAlt,
-          inactiveTrackColor: Colors.white.withOpacity(0.12),
+          inactiveTrackColor: Colors.white.withValues(alpha: 0.12),
           thumbColor: Colors.white,
-          overlayColor: kAccentColorAlt.withOpacity(0.14),
+          overlayColor: kAccentColorAlt.withValues(alpha: 0.14),
           trackHeight: 8,
         ),
         textTheme: ThemeData.dark().textTheme.apply(
